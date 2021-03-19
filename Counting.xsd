@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
+    xmlns:in="http://vdv.de/IoM/internal" xmlns:tns="http://vdv.de/IoM" elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+    <!-- Imports -->
+    <xs:include schemaLocation="broker_datatypes.xsd" />
+    <xs:include schemaLocation="Positioning.xsd" />
+    <xs:complexType name="AdditionalSensorMeasurementInformation">
+        <xs:annotation>
+            <xs:documentation>Use to transmit measured values at the limits of the operational range.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Temperature" type="xs:integer" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Voltage" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Simple types -->
+    <xs:simpleType name="objectType">
+        <xs:annotation>
+            <xs:documentation>Enum for object type.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Person" />
+            <xs:enumeration value="SmallPerson" />
+            <xs:enumeration value="Pram" />
+            <xs:enumeration value="Bike" />
+            <xs:enumeration value="Wheelchair" />
+            <xs:enumeration value="Luggage" />
+            <xs:enumeration value="OLO" /><!-- Other living objects -->
+            <xs:enumeration value="Other" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="State">
+        <xs:annotation>
+            <xs:documentation>Enum for sensor state.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Starting" />
+            <xs:enumeration value="Rebooting" />
+            <xs:enumeration value="Running" />
+            <xs:enumeration value="Failure" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FailureType">
+        <xs:annotation>
+            <xs:documentation>Enum for failure type (sensor state).</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Sabotage" />
+            <xs:enumeration value="Defect" />
+            <xs:enumeration value="MeasurementImpaired" />
+            <xs:enumeration value="BadConfig" />
+            <xs:enumeration value="Undervoltage" />
+            <xs:enumeration value="Overheat" />
+            <xs:enumeration value="Other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ComplexTypes -->
+    <xs:complexType name="SensorStateInformationStructure">
+        <xs:annotation>
+            <xs:documentation>Structure to transmit additional sensor status information</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="State" type="tns:State" minOccurs="1" maxOccurs="1" />
+            <xs:element name="FailureType" type="tns:FailureType" minOccurs="0" maxOccurs="1" />
+            <xs:element name="debugEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PositionType">
+        <xs:annotation>
+            <xs:documentation>Type for choice of logical and position structure.</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="LogicalPosition" type="tns:LogicalPositionDataStructure" />
+            <xs:element name="PhysicalPosition" type="tns:PhysicalPositionStructure" />
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="CountingStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for counted objects.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="In" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Out" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ObjectType" type="tns:objectType" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="OccupancyStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the person and objects occupancy.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Occupancy" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ObjectType" type="tns:objectType" minOccurs="1" maxOccurs="1" />
+            <xs:element name="SiteCapacity" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="IncrementCountingDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the counting data of persons and objects as determined by a counting systems
+                that do continuous countings or sum up the countings over a specified time interval, e.g. during one
+                journey.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="Counting" minOccurs="1" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="CountingEntry" type="tns:CountingStructure" minOccurs="0"
+                                    maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TimestampOfCountingReset" type="xs:dateTime" minOccurs="1"
+                        maxOccurs="1" />
+                    <xs:element name="CountingPosition" type="tns:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="DoorOpenDuration" type="xs:nonNegativeInteger" minOccurs="0"
+                        maxOccurs="1" />
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SingleEventCountingDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the counting data as determined by a counting system, e.g. door sensors.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="Counting" minOccurs="1" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="CountingEntry" type="tns:CountingStructure" minOccurs="0"
+                                    maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CountingPosition" type="tns:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="IsIntermediateCount" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="DoorOpenDuration" type="xs:nonNegativeInteger" minOccurs="0"
+                        maxOccurs="1" />
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SensorStateDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for transmitting current sensor state information.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="SensorState" type="tns:SensorStateInformationStructure" minOccurs="1"
+                        maxOccurs="1" />
+                    <xs:element name="MeasurementData" type="tns:AdditionalSensorMeasurementInformation"
+                        minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CountingQuality" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="TimestampOfLastCountEvent" type="xs:dateTime" minOccurs="0"
+                        maxOccurs="1" />
+                    <xs:element name="DoorOpen" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SensorControlDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for transmitting sensor control instructions.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="SensorReset" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SensorCounterReset" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SetSendingInterval" type="xs:nonNegativeInteger" minOccurs="0"
+                        maxOccurs="1" />
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="OccupancyDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for describing the occupancy with persons and objects at a site.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="OccupancyStructure" minOccurs="1" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="OccupancyElement" type="tns:OccupancyStructure"
+                                    minOccurs="0" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CountingPosition" type="tns:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Root elements -->
+    <xs:element name="SingleEventCounting" type="tns:SingleEventCountingDataStructure">
+        <xs:annotation>
+            <xs:documentation>The SingleEvent Count is used to transmit the count data triggered by a specific trigger.
+            </xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/Counting/+/+/SingleEventCountingData" />
+                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/SingleEventCountingData" />
+                    <in:ValidTopic
+                        topic="/#/Counting/+/+/AreaCount/+/CountingDevice/+/SingleEventCountingData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="IncrementCounting" type="tns:IncrementCountingDataStructure">
+        <xs:annotation>
+            <xs:documentation>The increment count is used to record entries/exits over a defined period of time.
+            </xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/Counting/+/+/Increment.CountingData" />
+                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/Increment.CountingData" />
+                    <in:ValidTopic
+                        topic="/#/Counting/APC/+/AreaCount/+/CountingDevice/+/Increment.CountingData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="Occupancy" type="tns:OccupancyDataStructure">
+        <xs:annotation>
+            <xs:documentation>The occupancy levels can be used to determine the current utilization of a space. This
+                value can be collected for the entire vehicle as well as for individual subareas.
+            </xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/Occupancy/+/+/OccupancyData" />
+                    <in:ValidTopic topic="/#/Occupancy/+/+/AreaCount/+/OccupancyData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="SensorControl" type="tns:SensorControlDataStructure">
+        <xs:annotation>
+            <xs:documentation>Status information that is used to transmit the current sensor status.</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/Counting/+/+/SensorControlData" />
+                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/SensorControlData" />
+                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/CountingDevice/+/SensorControlData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="SensorState" type="tns:SensorStateDataStructure">
+        <xs:annotation>
+            <xs:documentation>Used to transmit commands to the sensors.</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/CountingDevice/+/SensorStateData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>

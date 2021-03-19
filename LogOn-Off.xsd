@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:netex="http://www.netex.org.uk/netex"
+    xmlns:base="http://vdv.de/IoM" xmlns:in="http://vdv.de/IoM/internal" xmlns="http://www.dimo-fuh.de/initialize"
+    targetNamespace="http://vdv.de/IoM" elementFormDefault="qualified">
+
+    <xs:include schemaLocation="broker_datatypes.xsd" />
+
+    <!-- IMPORTANT: You need to download the files in https://github.com/nick-knowles/NeTEx-XML and extract them to directory 
+        "NeTEx-XML" for this schema to successfully import/reference NeTEx schemas -->
+    <xs:import namespace="http://www.netex.org.uk/netex"
+        schemaLocation="../NeTEx-master-f5a5ff0/xsd/NeTEx_publication.xsd" />
+
+    <!-- ======================================================================= -->
+    <!-- Abstract TechnicalLogOnOffOperation -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="AbstractTechnicalLogOnOffRequestStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Common abstract context for technical logon or logoff from vehicle or ITCS
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractRequestStructure">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- ======================================================================= -->
+    <!-- Abstract TechnicalVehicleLogOnOffOperation -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="AbstractTechnicalVehicleLogOnOffRequestStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Common abstract context for technical logon or logoff from vehicle to ITCS
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractTechnicalLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element ref="netex:VehicleRef">
+                        <xs:annotation>
+                            <xs:documentation>Versioned Reference to a Vehicle Journey
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OnboardUnitId" type="xs:token" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Unique identifier of the onboard unit, mostly for debugging purposes
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Vehicle LogOn -->
+    <xs:complexType name="TechnicalVehicleLogOnRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Technical logon request structure from vehicle to ITCS</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractTechnicalVehicleLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element name="BaseVersion" type="xs:normalizedString" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Base version of the current data
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOnResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Technical logon response structure.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="TechnicalVehicleLogOnResponseError"
+                            type="base:TechnicalVehicleLogOnResponseErrorStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Technical Vehicle Logon Response Errors
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="TechnicalVehicleLogOnResponseData"
+                            type="base:TechnicalVehicleLogOnResponseDataStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Technical Vehicle Logon Response Data
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOnResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Container for Technical Vehicle Logon Response Errors</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="TechnicalVehicleLogOnResponseCode"
+                        type="base:TechnicalVehicleLogOnResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response code for the technical vehicle log on response error
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOnResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Vehicle LogOn response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Vehicle LogOff -->
+
+    <xs:complexType name="TechnicalVehicleLogOffRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Vehicle Logoff request structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractTechnicalVehicleLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Vehicle LogOff response structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="TechnicalVehicleLogOffResponseError"
+                            type="base:TechnicalVehicleLogOffResponseErrorStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Technical Vehicle Logoff Response Errors
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="TechnicalVehicleLogOffResponseData"
+                            type="base:TechnicalVehicleLogOffResponseDataStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Technical Vehicle Logoff Response Data
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOffResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Vehicle LogOff response error structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="TechnicalVehicleLogOffResponseCode"
+                        type="base:TechnicalVehicleLogOffResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response Code for the Technical Vehicle LogOff Response
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOffResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Vehicle LogOff response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Technical Vehicle LogOnOff Elements -->
+
+    <xs:element name="TechnicalVehicleLogOnRequest" type="base:TechnicalVehicleLogOnRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for technical vehicle logon</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="TechnicalVehicleLogOffRequest" type="base:TechnicalVehicleLogOffRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for technical vehicle logoff</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="TechnicalVehicleLogOnResponse" type="base:TechnicalVehicleLogOnResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Response element for technical vehicle logon</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="TechnicalVehicleLogOffResponse" type="base:TechnicalVehicleLogOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Response element for technical vehicle logoff</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/Response" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- ======================================================================= -->
+    <!-- Driver LogOn / LogOff Messages -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="AbstractDriverVehicleLogOnOffRequestStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract TechnicalDriverLogOnOff request structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractTechnicalLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element ref="netex:VehicleRef">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to a vehicle
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element ref="netex:DriverRef">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to a driver
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Driver LogOn -->
+
+    <xs:complexType name="DriverVehicleLogOnRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOn request structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDriverVehicleLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DriverVehicleLogOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOn response structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="DriverVehicleLogOffResponseError"
+                            type="base:DriverVehicleLogOffResponseErrorStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Technical Driver Logon Response Errors
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="DriverVehicleLogOffResponseData"
+                            type="base:DriverVehicleLogOffResponseDataStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Technical Driver Logoff Response Data
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DriverVehicleLogOnResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOn response error structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="DriverVehicleLogOnResponseCode"
+                        type="base:DriverVehicleLogOnResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response Code for the Technical Driver Logon Response
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DriverVehicleLogOnResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOn response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <xs:element name="DriverVehicleLogOnResponseError"
+                            type="base:DriverVehicleLogOnResponseErrorStructure" />
+                        <xs:element name="DriverVehicleLogOnResponseData"
+                            type="base:DriverVehicleLogOnResponseDataStructure" />
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DriverVehicleLogOnResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>The DriverVehicleLogOnResponseDataStructure contains the result of the response in case of
+                a valid technical driver logon. At the moment no payload is defined for the response.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Driver LogOff -->
+    <xs:complexType name="DriverVehicleLogOffRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOff response structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractResponseStructure">
+                <xs:sequence>
+                    <xs:element ref="netex:VehicleRef" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to a vehicle.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element ref="netex:DriverRef" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to a driver. Optional.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DriverVehicleLogOffResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOff response error structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="DriverVehicleLogOffResponseCode"
+                        type="base:DriverVehicleLogOffResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response Code for the Technical Driver Logoff Response
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DriverVehicleLogOffResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Driver LogOff response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TechnicalVehicleLogOnLogOffTestamentStructure">
+        <xs:annotation>
+            <xs:documentation>Technical Vehicle LogOn / LogOff testament structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractMessageStructure">
+                <xs:sequence>
+                    <xs:element ref="netex:VehicleRef">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to a vehicle
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Human Vehicle LogOnOff Elements -->
+
+    <xs:element name="DriverVehicleLogOnRequest" type="base:DriverVehicleLogOnRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for technical driver logon</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="DriverVehicleLogOnResponse" type="base:DriverVehicleLogOnResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for technical driver logoff</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="DriverVehicleLogOffResponse" type="base:DriverVehicleLogOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Response element for technical driver logon</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="DriverVehicleLogOffRequest" type="base:DriverVehicleLogOffRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Response element for technical driver logoff</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="TechnicalVehicleLogOnLogOffTestament"
+        type="base:TechnicalVehicleLogOnLogOffTestamentStructure">
+        <xs:annotation>
+            <xs:documentation>Structure defining the testament payload send on connection loss by the broker
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- ======================================================================= -->
+    <!-- Abstract Operational Logon Messages -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="AbstractOperationalLogOnOffRequestStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract operational logOnOff request structure shared by Vehicle to ITCS and ITCS to
+                Vehicle.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractRequestStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="DatedJourneyRef" type="base:VehicleJourneyWithOperatingDayRef">
+                            <xs:annotation>
+                                <xs:documentation>Versioned reference to a dated vehicle journey
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="netex:ServiceJourneyPatternRef">
+                            <xs:annotation>
+                                <xs:documentation>Versioned reference to a service journey pattern
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- ======================================================================= -->
+    <!-- Vehicle To Central OperationalLogOnLogOff Messages -->
+    <!-- ======================================================================= -->
+
+    <!-- Abstract Vehicle Operational LogOnOff -->
+
+    <xs:complexType name="AbstractOperationalVehicleLogOnOffRequestStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Operational LogOnOff Request Structure (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element ref="netex:VehicleRef">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to a vehicle
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractOperationalVehicleLogOnOffResponseStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Operational LogOnOff Response Structure (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractResponseStructure">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Vehicle Operational LogOn -->
+
+    <xs:complexType name="OperationalVehicleLogOnRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Operational LogOnOff Request Structure (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalVehicleLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalVehicleLogOnResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Operational LogOnOff Response Structure (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalVehicleLogOnOffResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="OperationalVehicleLogOnResponseError"
+                            type="base:OperationalVehicleLogOnResponseErrorStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Vehicle Operational LogOn Response Errors
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="OperationalVehicleLogOnResponseData"
+                            type="base:OperationalVehicleLogOnResponseDataStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Vehicle Operational LogOn Response Data
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalVehicleLogOnResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Operational Vehicle LogOn Response error structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="OperationalVehicleLogOnResponseCode"
+                        type="base:OperationalVehicleLogOnResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response Code for the Vehicle Operational Logon Response
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalVehicleLogOnResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>Operational Vehicle LogOn Response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Vehicle Operational LogOff -->
+
+    <xs:complexType name="OperationalVehicleLogOffRequestStructure">
+        <xs:annotation>
+            <xs:documentation>OperationalVehicleLogOffRequest Structure (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalVehicleLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalVehicleLogOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>OperationalVehicleLogOffResponse (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalVehicleLogOnOffResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="OperationalVehicleLogOffResponseError"
+                            type="base:OperationalVehicleLogOffResponseErrorStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Vehicle Operational Logoff Response Errors
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="OperationalVehicleLogOffResponseData"
+                            type="base:OperationalVehicleLogOffResponseDataStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Vehicle Operational Logoff Response Data
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalVehicleLogOffResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Vehicle Operational Vehicle LogOn Response error structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="VehicleOperationalLogOffResponseCode"
+                        type="base:OperationalVehicleLogOffResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response Code for the Vehicle Operational Logoff Response
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalVehicleLogOffResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>Vehicle Operational Vehicle LogOn Response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Operational LogOnOff Elements (Vehicle to Central) -->
+
+    <xs:element name="OperationalVehicleLogOnRequest" type="base:OperationalVehicleLogOnRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="OperationalVehicleLogOffRequest" type="base:OperationalVehicleLogOffRequestStructure">
+        <xs:annotation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="OperationalVehicleLogOnResponse" type="base:OperationalVehicleLogOnResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="OperationalVehicleLogOffResponse" type="base:OperationalVehicleLogOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>The OperationalVehicleLogOffResponseStructure is the response to the
+                OperationalVehicleLogOffRequestStructure of the ITCS.
+            </xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="VehicleOperationalLogOffResponse"
+        type="base:AbstractOperationalVehicleLogOnOffResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for operational logoff (Vehicle to Central)</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- ======================================================================= -->
+    <!-- Central to Vehicle OperationalLogOnLogOff Messages -->
+    <!-- ======================================================================= -->
+
+    <!-- Itcs Operational LogOn -->
+
+    <xs:complexType name="OperationalLogOnInstructionRequestStructure">
+        <xs:annotation>
+            <xs:documentation>OperationalLogOnInstructionRequest (sent by ITCS).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalLogOnOffRequestStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalLogOnInstructionResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Operational LogOnOff Response Structure (initiated by the vehicle).</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractOperationalVehicleLogOnOffResponseStructure">
+                <xs:sequence>
+                    <xs:choice minOccurs="1" maxOccurs="1">
+                        <!-- At least one of these choices must be chosen -->
+                        <xs:element name="OperationalLogOnInstructionResponseError"
+                            type="base:OperationalLogOnInstructionResponseErrorStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Itcs Operational Logon Response Errors
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="OperationalLogOnInstructionResponseData"
+                            type="base:OperationalLogOnInstructionResponseDataStructure">
+                            <xs:annotation>
+                                <xs:documentation>Container for Itcs Operational Logon Response Data
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalLogOnInstructionResponseErrorStructure">
+        <xs:annotation>
+            <xs:documentation>Itcs Operational LogOn response error structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractErrorStructure">
+                <xs:sequence>
+                    <xs:element name="OperationalLogOnInstructionResponseCode"
+                        type="base:OperationalLogOnInstructionResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Response Code for the Itcs Operational Logon Response
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="OperationalLogOnInstructionResponseDataStructure">
+        <xs:annotation>
+            <xs:documentation>Itcs Operational LogOn response data structure</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataStructure">
+                <xs:sequence>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- FIXME: Keine Abmeldung durch die Leitstelle vorgesehen? -->
+
+    <!-- Operational LogOnOff Elements (Vehicle to Central) -->
+
+    <xs:element name="OperationalLogOnInstructionRequest"
+        type="base:OperationalLogOnInstructionRequestStructure">
+        <xs:annotation>
+            <xs:documentation>OperationalLogOnInstructionResponse (sent by vehicle).</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic
+                        topic="Version/+/Inbox/VehicleInbox/Country/+/Organisation/+/Vehicle/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="OperationalLogOnInstructionResponse"
+        type="base:OperationalLogOnInstructionResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic
+                        topic="Version/+/Inbox/ItcsInbox/+/Country/+/Organisation/+/Vehicle/+/CorrelationId/+/ResponseData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- ======================================================================= -->
+    <!-- Async Response to a ItcsOperationalLogOnOffRequest Message -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="AsyncItcsOperationalLogOnDriverResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for asynchronous driver response to a ItcsOperationalLogOnOffRequest
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractAsyncResponseStructure">
+                <xs:sequence>
+                    <xs:element name="AsyncItcsOperationalLogOnDriverStatus" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>Boolean to indicate whether LogOn was accepted or not
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="AsyncItcsOperationalLogOnDriverResponseCode"
+                        type="base:AsyncItcsOperationalLogOnDriverResponseCodeEnumeration" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Reason for the rejection
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- ItcsOperationalLogonOffAsyncResponse Element -->
+
+    <xs:element name="AsyncItcsOperationalLogOnDriverResponse"
+        type="base:AsyncItcsOperationalLogOnDriverResponseStructure">
+        <xs:annotation>
+            <xs:documentation>Asynchronous Driver Response to a Itcs vehicle log on</xs:documentation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic
+                        topic="Version/+/Inbox/ItcsInbox/+/Country/+/Organisation/+/Vehicle/+/CorrelationId/+/RequestData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- ======================================================================= -->
+    <!-- UserConfirmation -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="UserConfirmationRequestStructure">
+        <xs:annotation>
+            <xs:documentation>The UserConfirmationRequestStructure is the potential (asynchronous) response to a
+                preceding instruction by the ITCS.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractAsyncResponseStructure">
+                <xs:sequence>
+                    <xs:element name="UserConfirmationCode" type="base:UserConfirmationCodeEnumeration"
+                        minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="UserConfirmationRequest" type="base:UserConfirmationRequestStructure">
+        <xs:annotation>
+            <xs:documentation>Asynchronous response to prior request. New request, because it is not the immediate
+                response.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- ======================================================================= -->
+    <!-- Technical Vehicle LogOnOff Enumerations -->
+    <!-- ======================================================================= -->
+
+    <xs:simpleType name="TechnicalVehicleLogOnResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a vehicle logon</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="doubleLogOn" />
+            <xs:enumeration value="unknownVehicle" />
+            <xs:enumeration value="wrongDataVersion" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TechnicalVehicleLogOffResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a vehicle logon</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="vehicleNotLoggedOn" />
+            <xs:enumeration value="unknownVehicle" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ======================================================================= -->
+    <!-- Driver LogOnOff Enumerations -->
+    <!-- ======================================================================= -->
+
+
+    <xs:simpleType name="DriverVehicleLogOnResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a driver logon</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknownDriver" />
+            <xs:enumeration value="unknownVehicle" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="wrongVehicle" />
+            <xs:enumeration value="doubleLogOn" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DriverVehicleLogOffResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a driver logon</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="vehicleNotLoggedOn" />
+            <xs:enumeration value="driverNotLoggedOn" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="technicalVehicleLogOnMissing" />
+            <xs:enumeration value="unknownVehicle" />
+            <xs:enumeration value="unknownDriver" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ======================================================================= -->
+    <!-- Vehicle Operational LogOnOff Enumerations -->
+    <!-- ======================================================================= -->
+
+
+    <xs:simpleType name="AsyncItcsOperationalLogOnDriverResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Driver response codes valid for a operational logon initiated by the central
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ok" />
+            <xs:enumeration value="rejected" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="OperationalVehicleLogOnResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a operational logon initiated by the vehicle</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknownJourney" />
+            <xs:enumeration value="journeyDeleted" />
+            <xs:enumeration value="unknownRoute" />
+            <xs:enumeration value="unknownVehicle" />
+            <xs:enumeration value="wrongVehicleType" />
+            <xs:enumeration value="technicalVehicleLogOnMissing" />
+            <xs:enumeration value="doubleLogOn" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="OperationalVehicleLogOffResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a operational logoff initiated by the vehicle</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknownVehicle" />
+            <xs:enumeration value="vehicleNotLoggedOn" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ======================================================================= -->
+    <!-- Operational LogOnOff Enumerations -->
+    <!-- ======================================================================= -->
+
+    <xs:simpleType name="OperationalLogOnInstructionResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Response codes valid for a operational logon initiated by the ITCS</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknownJourneyReference" />
+            <xs:enumeration value="unknownRouteReference" />
+            <xs:enumeration value="resolveIds" />
+            <xs:enumeration value="rejectedNoReasonGiven" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ======================================================================= -->
+    <!-- UserConfirmation Enumerations -->
+    <!-- ======================================================================= -->
+
+    <xs:simpleType name="UserConfirmationCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Valid payloads for an user response to the ITCS</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="rejected" />
+            <xs:enumeration value="accepted" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
+    xmlns:in="http://vdv.de/IoM/internal" xmlns:netex="http://www.netex.org.uk/netex" xmlns:tns="http://vdv.de/IoM"
+    elementFormDefault="qualified">
+    <xs:include schemaLocation="broker_datatypes.xsd" />
+    <xs:import namespace="http://www.netex.org.uk/netex"
+        schemaLocation="../NeTEx-master-f5a5ff0/xsd/NeTEx_publication.xsd" />
+    <!-- ======================================================================= -->
+    <!-- 2) Physical location reporting -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="PhysicalPositionStructure">
+        <xs:annotation>
+            <xs:documentation>Common context for physical positions from various sensors</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="OdometerPhysicalPosition"
+                type="tns:OdometerPhysicalPositionWithTimestampStructure" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Physical position as determined by an odometer
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionWithTimestampStructure"
+                minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Physical position as determined by a global navigation satellite system
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BeaconPointPhysicalPosition"
+                type="tns:BeaconPointPhysicalPositionWithTimestampStructure" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Physical position as determined by an external beacon point
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Extensions" type="xs:anyType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="OdometerPhysicalPositionStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by an odometer</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="OdometerValue" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Value of the odometer value in counts since the last reset
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="OdometerValueInMeters" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Value of the odometer value in meters since the last reset
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="OdometerPhysicalPositionWithTimestampStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by an odometer with a timestamp.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="OdometerPhysicalPosition" type="tns:OdometerPhysicalPositionStructure"
+                minOccurs="1" maxOccurs="1" />
+            <xs:element name="OdometerTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="OdometerPhysicalPositionDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by an odometer</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="OdometerPhysicalPosition" type="tns:OdometerPhysicalPositionStructure">
+                        <xs:annotation>
+                            <xs:documentation>Physical position as determined by an odometer
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="GnssPhysicalPositionStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by a GNSS, e.g. GPS</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="WGS84PhysicalPosition" type="netex:LocationStructure" minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Coordinates of a physical position in decimal degrees
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="NumberOfVisibleSatellites" type="xs:nonNegativeInteger" minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Number of satellites that are currently received by the receiver.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CompassBearing" type="xs:decimal" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>0-360, 90 = East [degrees]</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Velocity" type="xs:decimal" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Speed in m/s</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GnssPhysicalPositionWithTimestampStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by a global navigation satellite system
+                with a timestamp.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionStructure" minOccurs="1"
+                maxOccurs="1" />
+            <xs:element name="GnssTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GnssPhysicalPositionDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by a GNSS, e.g. GPS</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionStructure">
+                        <xs:annotation>
+                            <xs:documentation>Coordinates of a physical position determined by a GNSS
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="BeaconPointPhysicalPositionStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by a external beacon point
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <!-- FIXME: Sollten wir das dann nicht auch BeaconPointRef nennen? -->
+            <xs:element name="BeaconPointId" type="netex:BeaconPointRefStructure">
+                <xs:annotation>
+                    <xs:documentation>Versioned reference to the identifying beacon point
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DistanceSinceBeaconPoint" type="xs:nonNegativeInteger">
+                <xs:annotation>
+                    <xs:documentation>Distance driven since registering the beacon point
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BeaconPointPhysicalPositionWithTimestampStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by a beacon point with a timestamp.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="BeaconPointPhysicalPosition" type="tns:BeaconPointPhysicalPositionStructure"
+                minOccurs="1" maxOccurs="1" />
+            <xs:element name="BeaconPointTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BeaconPointPhysicalPositionDataStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for the physical position as determined by a external beacon point
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="BeaconPointPhysicalPosition"
+                        type="tns:BeaconPointPhysicalPositionStructure">
+                        <xs:annotation>
+                            <xs:documentation>Versioned reference to the identifying beacon point
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- ======================================================================= -->
+    <!-- 3) Logical location reporting -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="LogicalPositionDataStructure">
+        <xs:annotation>
+            <xs:documentation>Logical Position of a vehicle on a vehicle journey</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="VehicleJourneyRef" type="tns:VehicleJourneyWithOperatingDayRef"
+                        minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Reference to a Vehicle Journey with an attached Operating Day
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="DistanceSinceLastStop" type="xs:nonNegativeInteger">
+                        <xs:annotation>
+                            <xs:documentation>Distance in meters travelled by the vehicle since the last stop
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="DistanceToNextStop" type="xs:nonNegativeInteger" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Distance in meters to the next stop of the vehicle
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CallSequenceNoOfPreviousCall" type="xs:nonNegativeInteger">
+                        <xs:annotation>
+                            <xs:documentation>Sequence number of the current/last Call in the Vehicle Journey
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="CallSequenceNoOfOnwardCall" type="xs:nonNegativeInteger" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Sequence number of the next Call in the Vehicle Journey
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="TimeTableDelay" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>Delay of the vehicle in seconds compared to the planned Vehicle Journey
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PhysicalPosition" type="tns:PhysicalPositionStructure" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Phyiscal position corresponding to this logical position
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Field that may be used for proprietary extensions to the protocol
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Elements -->
+    <xs:element name="LogicalPosition" type="tns:LogicalPositionDataStructure">
+        <xs:annotation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/LogicalPositionData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="OdometerPhysicalPosition" type="tns:OdometerPhysicalPositionDataStructure">
+        <xs:annotation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/PhysicalPosition/OdometerPhysicalPositionData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionDataStructure">
+        <xs:annotation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/PhysicalPosition/GnssPhysicalPositionData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="BeaconPointPhysicalPosition" type="tns:BeaconPointPhysicalPositionDataStructure">
+        <xs:annotation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/PhysicalPosition/BeaconPointPhysicalPositionData" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="PhysicalPosition" type="tns:PhysicalPositionStructure">
+        <xs:annotation>
+            <xs:appinfo>
+                <in:ValidTopics>
+                    <in:ValidTopic topic="/#/PhysicalPosition" />
+                </in:ValidTopics>
+            </xs:appinfo>
+        </xs:annotation>
+    </xs:element>
+
+</xs:schema>

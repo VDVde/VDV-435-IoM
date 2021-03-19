@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:netex="http://www.netex.org.uk/netex"
+    xmlns="http://vdv.de/IoM" targetNamespace="http://vdv.de/IoM" elementFormDefault="qualified" version="2.0">
+
+    <!-- IMPORTANT: You need to download the files in https://github.com/nick-knowles/NeTEx-XML and extract them to directory 
+        "NeTEx-XML" for this schema to successfully import/reference NeTEx schemas -->
+    <xs:import namespace="http://www.netex.org.uk/netex"
+        schemaLocation="../NeTEx-master-f5a5ff0/xsd/NeTEx_publication.xsd" />
+
+    <!-- ======================================================================= -->
+    <!-- Helpers -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="AbstractBasicStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract context for all messages, both in Request/Response and in Publish/Subscribe
+            </xs:documentation>
+        </xs:annotation>
+        <!-- Each message contains a timestamp -->
+        <xs:sequence>
+            <xs:element name="Timestamp" type="xs:dateTime">
+                <xs:annotation>
+                    <xs:documentation>Timestamp, when the message was sent. Should at least be precise to milliseconds
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Version" type="xs:normalizedString">
+                <xs:annotation>
+                    <xs:documentation>Version of the interface.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractMessageStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract context for all messages sent in Request/Response</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="AbstractBasicStructure">
+                <xs:sequence>
+                    <xs:element name="MessageId" type="UUIDType">
+                        <xs:annotation>
+                            <xs:documentation>Unique message id, used to reference asynchronous messages and for
+                                logging. The
+                                UUID should be unique in the context of the system
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractRequestStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract context for all requests sent in Request/Response</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="AbstractMessageStructure" />
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractRequestWithReferenceStructure" abstract="true">
+        <xs:complexContent>
+            <xs:extension base="AbstractRequestStructure">
+                <xs:sequence>
+                    <xs:element name="MessageIdRef" type="UUIDType" minOccurs="1" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractResponseStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract context for all synchronous responses sent in Request/Response
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="AbstractMessageStructure">
+                <!-- Uses the same semantics and structure as in SIRI responses -->
+                <xs:sequence>
+                    <xs:element name="CommonResponseCode" type="CommonResponseCodeEnumeration">
+                        <xs:annotation>
+                            <xs:documentation>Common response codes describing global conditions of the system,
+                                independent from the actual request
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="InvalidMessageResponseStructure">
+        <xs:complexContent>
+            <xs:extension base="AbstractResponseStructure">
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractAsyncResponseStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract context for all asynchronous responses sent in Request/Response
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <!-- Should inherit from AbstractRequestStructure, because it is not a response directly related to a request -->
+            <xs:extension base="AbstractRequestStructure">
+                <xs:sequence>
+                    <xs:element name="MessageIdRef" type="UUIDType">
+                        <xs:annotation>
+                            <xs:documentation>Message ID to which this asynchronous message refers to
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractDataPublicationStructure">
+        <xs:sequence>
+            <xs:element name="Timestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Version" type="xs:normalizedString" minOccurs="1" maxOccurs="1" />
+            <xs:element name="TimestampOfMeasurement" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PublisherId" type="IdType" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractErrorStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract Error Structure for all potential Errors
+            </xs:documentation>
+        </xs:annotation>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractDataStructure" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Abstract Data Structure for all potential response codes
+            </xs:documentation>
+        </xs:annotation>
+    </xs:complexType>
+
+    <xs:complexType name="VehicleJourneyWithOperatingDayRef">
+        <xs:annotation>
+            <xs:documentation>Versioned Reference to a Vehicle Journey with its Operating Day attached
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="netex:VehicleJourneyRef" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Versioned Reference to a Vehicle Journey
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="netex:OperatingDayRef" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Versioned Reference to an Operating Day
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="netex:BlockRef" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Optional, versioned reference to a Block</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ======================================================================= -->
+    <!-- Simple Helpers -->
+    <!-- ======================================================================= -->
+
+    <xs:simpleType name="CommonResponseCodeEnumeration">
+        <xs:annotation>
+            <xs:documentation>Common response code type describing global conditions of the system, independent from the
+                actual request
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ok">
+                <xs:annotation>
+                    <xs:documentation>Request successfully processed
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="messageUnderstood">
+                <xs:annotation>
+                    <xs:documentation>Request has been understood, but has been declined to due business logic. Refer to
+                        specialized ResponseCode for more information.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="unkownExtensions">
+                <xs:annotation>
+                    <xs:documentation>Request contained extensions that were not supported by the producer. A response
+                        has been provided but some or all extensions have been ignored
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="rejectedNoReasonGiven">
+                <xs:annotation>
+                    <xs:documentation>Request rejected, no reason supplied
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="InvalidRequest">
+                <xs:annotation>
+                    <xs:documentation>Request rejected, could not successfully parse request
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="rejectedInternalError">
+                <xs:annotation>
+                    <xs:documentation>Request ignored, internal error while processing request
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="operationNotAvailable">
+                <xs:annotation>
+                    <xs:documentation>Requested operation is not available at this time
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="operationNotSupported">
+                <xs:annotation>
+                    <xs:documentation>Requested operation is not supported
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="versionNotSupported">
+                <xs:annotation>
+                    <xs:documentation>The request has a version of IoM, that is currently not supported
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unauthorized">
+                <xs:annotation>
+                    <xs:documentation>HTTP_ONLY: The requestor is not authorized to perform the request
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Other">
+                <xs:annotation>
+                    <xs:documentation>Other error occurred, more information may be written to the Extensions field
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="UUIDType">
+        <xs:annotation>
+            <xs:documentation>Type for UUID used to identify messages, e.g. 123e4567-e89b-12d3-a456-426655440000
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- TODO: validate regex for VDV431 identifiers -->
+    <xs:simpleType name="IdType">
+        <xs:annotation>
+            <xs:documentation>Simple type for VDV431 and IFOPT identifiers, e.g.
+                CountryCode:Region:StopPlaceNumber:Quay:StopPoint
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:ID">
+            <xs:pattern value="([A-Za-z0-9]+:)*([A-Za-z0-9])+" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

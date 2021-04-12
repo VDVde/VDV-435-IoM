@@ -240,7 +240,7 @@
         <xs:complexContent>
             <xs:extension base="tns:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="VehicleJourneyRef" type="tns:VehicleJourneyWithOperatingDayRef"
+                    <xs:element name="VehicleJourneyRef" type="tns:VehicleJourneyWithOperatingDayRefStructure"
                         minOccurs="0">
                         <xs:annotation>
                             <xs:documentation>Reference to a Vehicle Journey with an attached Operating Day

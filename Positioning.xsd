@@ -49,7 +49,7 @@
             <xs:documentation>Structure for the physical position as determined by an odometer</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="OdometerValue" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1">
+            <xs:element name="OdometerValue" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>Value of the odometer value in counts since the last reset
                     </xs:documentation>

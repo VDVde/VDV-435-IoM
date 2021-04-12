@@ -205,7 +205,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="InvalidRequest">
+            <xs:enumeration value="invalidRequest">
                 <xs:annotation>
                     <xs:documentation>Request rejected, could not successfully parse request
                     </xs:documentation>
@@ -235,13 +235,13 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="Unauthorized">
+            <xs:enumeration value="unauthorized">
                 <xs:annotation>
                     <xs:documentation>HTTP_ONLY: The requestor is not authorized to perform the request
                     </xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="Other">
+            <xs:enumeration value="other">
                 <xs:annotation>
                     <xs:documentation>Other error occurred, more information may be written to the Extensions field
                     </xs:documentation>

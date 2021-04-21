@@ -257,7 +257,7 @@
 
     <!-- Technical Vehicle LogOnOff Elements -->
 
-    <xs:element name="TechnicalVehicleLogOnRequest" type="base:TechnicalVehicleLogOnRequestStructure">
+    <xs:element name="TechnicalVehicleLogOnRequestStructure" type="base:TechnicalVehicleLogOnRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical vehicle logon</xs:documentation>
             <xs:appinfo>
@@ -268,7 +268,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOffRequest" type="base:TechnicalVehicleLogOffRequestStructure">
+    <xs:element name="TechnicalVehicleLogOffRequestStructure" type="base:TechnicalVehicleLogOffRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical vehicle logoff</xs:documentation>
             <xs:appinfo>
@@ -279,7 +279,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOnResponse" type="base:TechnicalVehicleLogOnResponseStructure">
+    <xs:element name="TechnicalVehicleLogOnResponseStructure" type="base:TechnicalVehicleLogOnResponseStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical vehicle logon</xs:documentation>
             <xs:appinfo>
@@ -290,7 +290,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOffResponse" type="base:TechnicalVehicleLogOffResponseStructure">
+    <xs:element name="TechnicalVehicleLogOffResponseStructure" type="base:TechnicalVehicleLogOffResponseStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical vehicle logoff</xs:documentation>
             <xs:appinfo>
@@ -546,7 +546,7 @@
 
     <!-- Human Vehicle LogOnOff Elements -->
 
-    <xs:element name="DriverVehicleLogOnRequest" type="base:DriverVehicleLogOnRequestStructure">
+    <xs:element name="DriverVehicleLogOnRequestStructure" type="base:DriverVehicleLogOnRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical driver logon</xs:documentation>
             <xs:appinfo>
@@ -557,7 +557,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="DriverVehicleLogOnResponse" type="base:DriverVehicleLogOnResponseStructure">
+    <xs:element name="DriverVehicleLogOnResponseStructure" type="base:DriverVehicleLogOnResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical driver logoff</xs:documentation>
             <xs:appinfo>
@@ -568,7 +568,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="DriverVehicleLogOffResponse" type="base:DriverVehicleLogOffResponseStructure">
+    <xs:element name="DriverVehicleLogOffResponseStructure" type="base:DriverVehicleLogOffResponseStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical driver logon</xs:documentation>
             <xs:appinfo>
@@ -579,7 +579,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="DriverVehicleLogOffRequest" type="base:DriverVehicleLogOffRequestStructure">
+    <xs:element name="DriverVehicleLogOffRequestStructure" type="base:DriverVehicleLogOffRequestStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical driver logoff</xs:documentation>
             <xs:appinfo>
@@ -590,7 +590,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOnLogOffTestament"
+    <xs:element name="TechnicalVehicleLogOnLogOffTestamentStructure"
         type="base:TechnicalVehicleLogOnLogOffTestamentStructure">
         <xs:annotation>
             <xs:documentation>Structure defining the testament payload send on connection loss by the broker
@@ -863,7 +863,7 @@
 
     <!-- Operational LogOnOff Elements (Vehicle to Central) -->
 
-    <xs:element name="OperationalVehicleLogOnRequest" type="base:OperationalVehicleLogOnRequestStructure">
+    <xs:element name="OperationalVehicleLogOnRequestStructure" type="base:OperationalVehicleLogOnRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
             <xs:appinfo>
@@ -874,7 +874,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalVehicleLogOffRequest" type="base:OperationalVehicleLogOffRequestStructure">
+    <xs:element name="OperationalVehicleLogOffRequestStructure" type="base:OperationalVehicleLogOffRequestStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -884,7 +884,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalVehicleLogOnResponse" type="base:OperationalVehicleLogOnResponseStructure">
+    <xs:element name="OperationalVehicleLogOnResponseStructure" type="base:OperationalVehicleLogOnResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
             <xs:appinfo>
@@ -895,7 +895,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalVehicleLogOffResponse" type="base:OperationalVehicleLogOffResponseStructure">
+    <xs:element name="OperationalVehicleLogOffResponseStructure" type="base:OperationalVehicleLogOffResponseStructure">
         <xs:annotation>
             <xs:documentation>The OperationalVehicleLogOffResponseStructure is the response to the
                 OperationalVehicleLogOffRequestStructure of the ITCS.
@@ -908,7 +908,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="VehicleOperationalLogOffResponse"
+    <xs:element name="VehicleOperationalLogOffResponseStructure"
         type="base:AbstractOperationalVehicleLogOnOffResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logoff (Vehicle to Central)</xs:documentation>
@@ -1026,7 +1026,7 @@
 
     <!-- Operational LogOnOff Elements (Vehicle to Central) -->
 
-    <xs:element name="OperationalLogOnInstructionRequest"
+    <xs:element name="OperationalLogOnInstructionRequestStructure"
         type="base:OperationalLogOnInstructionRequestStructure">
         <xs:annotation>
             <xs:documentation>OperationalLogOnInstructionResponse (sent by vehicle).</xs:documentation>
@@ -1039,7 +1039,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalLogOnInstructionResponse"
+    <xs:element name="OperationalLogOnInstructionResponseStructure"
         type="base:OperationalLogOnInstructionResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
@@ -1090,7 +1090,7 @@
 
     <!-- ItcsOperationalLogonOffAsyncResponse Element -->
 
-    <xs:element name="AsyncItcsOperationalLogOnDriverResponse"
+    <xs:element name="AsyncItcsOperationalLogOnDriverResponseStructure"
         type="base:AsyncItcsOperationalLogOnDriverResponseStructure">
         <xs:annotation>
             <xs:documentation>Asynchronous Driver Response to a Itcs vehicle log on</xs:documentation>
@@ -1124,7 +1124,7 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="UserConfirmationRequest" type="base:UserConfirmationRequestStructure">
+    <xs:element name="UserConfirmationRequestStructure" type="base:UserConfirmationRequestStructure">
         <xs:annotation>
             <xs:documentation>Asynchronous response to prior request. New request, because it is not the immediate
                 response.

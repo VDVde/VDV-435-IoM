@@ -295,7 +295,7 @@
     </xs:complexType>
 
     <!-- Elements -->
-    <xs:element name="LogicalPosition" type="tns:LogicalPositionDataStructure">
+    <xs:element name="LogicalPositionDataStructure" type="tns:LogicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -304,7 +304,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="OdometerPhysicalPosition" type="tns:OdometerPhysicalPositionDataStructure">
+    <xs:element name="OdometerPhysicalPositionDataStructure" type="tns:OdometerPhysicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -313,7 +313,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionDataStructure">
+    <xs:element name="GnssPhysicalPositionDataStructure" type="tns:GnssPhysicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -322,7 +322,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="BeaconPointPhysicalPosition" type="tns:BeaconPointPhysicalPositionDataStructure">
+    <xs:element name="BeaconPointPhysicalPositionDataStructure" type="tns:BeaconPointPhysicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -331,7 +331,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="PhysicalPosition" type="tns:PhysicalPositionStructure">
+    <xs:element name="PhysicalPositionDataStructure" type="tns:PhysicalPositionStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>

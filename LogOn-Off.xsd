@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:netex="http://www.netex.org.uk/netex"
-    xmlns:base="http://vdv.de/IoM" xmlns:in="http://vdv.de/IoM/internal" xmlns="http://www.dimo-fuh.de/initialize"
-    targetNamespace="http://vdv.de/IoM" elementFormDefault="qualified">
+    xmlns:base="http://vdv.de/IoM" xmlns:int="http://vdv.de/IoM" targetNamespace="http://vdv.de/IoM"
+    elementFormDefault="qualified">
 
     <xs:include schemaLocation="broker_datatypes.xsd" />
 
     <!-- IMPORTANT: You need to download the files in https://github.com/nick-knowles/NeTEx-XML and extract them to directory 
-        "NeTEx-XML" for this schema to successfully import/reference NeTEx schemas -->
+        "NeTEx-master-f5a5ff0" for this schema to successfully import/reference NeTEx schemas -->
     <xs:import namespace="http://www.netex.org.uk/netex"
         schemaLocation="../NeTEx-master-f5a5ff0/xsd/NeTEx_publication.xsd" />
 
@@ -257,47 +257,31 @@
 
     <!-- Technical Vehicle LogOnOff Elements -->
 
-    <xs:element name="TechnicalVehicleLogOnRequestStructure" type="base:TechnicalVehicleLogOnRequestStructure">
+    <xs:element name="TechnicalVehicleLogOnRequestStructure"
+        type="base:TechnicalVehicleLogOnRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical vehicle logon</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOffRequestStructure" type="base:TechnicalVehicleLogOffRequestStructure">
+    <xs:element name="TechnicalVehicleLogOffRequestStructure"
+        type="base:TechnicalVehicleLogOffRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical vehicle logoff</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOnResponseStructure" type="base:TechnicalVehicleLogOnResponseStructure">
+    <xs:element name="TechnicalVehicleLogOnResponseStructure"
+        type="base:TechnicalVehicleLogOnResponseStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical vehicle logon</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="TechnicalVehicleLogOffResponseStructure" type="base:TechnicalVehicleLogOffResponseStructure">
+    <xs:element name="TechnicalVehicleLogOffResponseStructure"
+        type="base:TechnicalVehicleLogOffResponseStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical vehicle logoff</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/Response" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
@@ -549,44 +533,24 @@
     <xs:element name="DriverVehicleLogOnRequestStructure" type="base:DriverVehicleLogOnRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical driver logon</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
     <xs:element name="DriverVehicleLogOnResponseStructure" type="base:DriverVehicleLogOnResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for technical driver logoff</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
     <xs:element name="DriverVehicleLogOffResponseStructure" type="base:DriverVehicleLogOffResponseStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical driver logon</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
     <xs:element name="DriverVehicleLogOffRequestStructure" type="base:DriverVehicleLogOffRequestStructure">
         <xs:annotation>
             <xs:documentation>Response element for technical driver logoff</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
@@ -613,7 +577,7 @@
                 <xs:sequence>
                     <xs:choice minOccurs="1" maxOccurs="1">
                         <!-- At least one of these choices must be chosen -->
-                        <xs:element name="DatedJourneyRef" type="base:VehicleJourneyWithOperatingDayRef">
+                        <xs:element name="DatedJourneyRef" type="base:VehicleJourneyWithOperatingDayRefStructure">
                             <xs:annotation>
                                 <xs:documentation>Versioned reference to a dated vehicle journey
                                 </xs:documentation>
@@ -863,48 +827,35 @@
 
     <!-- Operational LogOnOff Elements (Vehicle to Central) -->
 
-    <xs:element name="OperationalVehicleLogOnRequestStructure" type="base:OperationalVehicleLogOnRequestStructure">
+    <xs:element name="OperationalVehicleLogOnRequestStructure"
+        type="base:OperationalVehicleLogOnRequestStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalVehicleLogOffRequestStructure" type="base:OperationalVehicleLogOffRequestStructure">
+    <xs:element name="OperationalVehicleLogOffRequestStructure"
+        type="base:OperationalVehicleLogOffRequestStructure">
         <xs:annotation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/ItcsInbox/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
+            <xs:documentation>The OperationalVehicleLogOffRequestStructure initiates an operational logoff of the
+                vehicle on a journey. The logoff is initiated by the vehicle.
+            </xs:documentation>
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalVehicleLogOnResponseStructure" type="base:OperationalVehicleLogOnResponseStructure">
+    <xs:element name="OperationalVehicleLogOnResponseStructure"
+        type="base:OperationalVehicleLogOnResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="OperationalVehicleLogOffResponseStructure" type="base:OperationalVehicleLogOffResponseStructure">
+    <xs:element name="OperationalVehicleLogOffResponseStructure"
+        type="base:OperationalVehicleLogOffResponseStructure">
         <xs:annotation>
             <xs:documentation>The OperationalVehicleLogOffResponseStructure is the response to the
                 OperationalVehicleLogOffRequestStructure of the ITCS.
             </xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
@@ -912,11 +863,6 @@
         type="base:AbstractOperationalVehicleLogOnOffResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logoff (Vehicle to Central)</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="Version/+/Inbox/VehicleInbox/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
@@ -1030,12 +976,6 @@
         type="base:OperationalLogOnInstructionRequestStructure">
         <xs:annotation>
             <xs:documentation>OperationalLogOnInstructionResponse (sent by vehicle).</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic
-                        topic="Version/+/Inbox/VehicleInbox/Country/+/Organisation/+/Vehicle/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
@@ -1043,12 +983,6 @@
         type="base:OperationalLogOnInstructionResponseStructure">
         <xs:annotation>
             <xs:documentation>Request element for operational logon (Vehicle to Central)</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic
-                        topic="Version/+/Inbox/ItcsInbox/+/Country/+/Organisation/+/Vehicle/+/CorrelationId/+/ResponseData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 
@@ -1094,12 +1028,6 @@
         type="base:AsyncItcsOperationalLogOnDriverResponseStructure">
         <xs:annotation>
             <xs:documentation>Asynchronous Driver Response to a Itcs vehicle log on</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic
-                        topic="Version/+/Inbox/ItcsInbox/+/Country/+/Organisation/+/Vehicle/+/CorrelationId/+/RequestData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 

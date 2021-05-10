@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
-    xmlns:in="http://vdv.de/IoM/internal" xmlns:netex="http://www.netex.org.uk/netex" xmlns:tns="http://vdv.de/IoM"
+    xmlns:in="http://vdv.de/IoM/internal" xmlns:netex="http://www.netex.org.uk/netex" xmlns:broker="http://vdv.de/IoM"
     elementFormDefault="qualified">
     <xs:include schemaLocation="broker_datatypes.xsd" />
     <xs:import namespace="http://www.netex.org.uk/netex"
@@ -15,13 +15,13 @@
         </xs:annotation>
         <xs:sequence>
             <xs:element name="OdometerPhysicalPosition"
-                type="tns:OdometerPhysicalPositionWithTimestampStructure" minOccurs="0" maxOccurs="1">
+                type="broker:OdometerPhysicalPositionWithTimestampStructure" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>Physical position as determined by an odometer
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionWithTimestampStructure"
+            <xs:element name="GnssPhysicalPosition" type="broker:GnssPhysicalPositionWithTimestampStructure"
                 minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>Physical position as determined by a global navigation satellite system
@@ -29,7 +29,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element name="BeaconPointPhysicalPosition"
-                type="tns:BeaconPointPhysicalPositionWithTimestampStructure" minOccurs="0" maxOccurs="1">
+                type="broker:BeaconPointPhysicalPositionWithTimestampStructure" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>Physical position as determined by an external beacon point
                     </xs:documentation>
@@ -70,7 +70,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="OdometerPhysicalPosition" type="tns:OdometerPhysicalPositionStructure"
+            <xs:element name="OdometerPhysicalPosition" type="broker:OdometerPhysicalPositionStructure"
                 minOccurs="1" maxOccurs="1" />
             <xs:element name="OdometerTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
@@ -81,9 +81,9 @@
             <xs:documentation>Structure for the physical position as determined by an odometer</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="OdometerPhysicalPosition" type="tns:OdometerPhysicalPositionStructure">
+                    <xs:element name="OdometerPhysicalPosition" type="broker:OdometerPhysicalPositionStructure">
                         <xs:annotation>
                             <xs:documentation>Physical position as determined by an odometer
                             </xs:documentation>
@@ -139,7 +139,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionStructure" minOccurs="1"
+            <xs:element name="GnssPhysicalPosition" type="broker:GnssPhysicalPositionStructure" minOccurs="1"
                 maxOccurs="1" />
             <xs:element name="GnssTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
@@ -150,9 +150,9 @@
             <xs:documentation>Structure for the physical position as determined by a GNSS, e.g. GPS</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="GnssPhysicalPosition" type="tns:GnssPhysicalPositionStructure">
+                    <xs:element name="GnssPhysicalPosition" type="broker:GnssPhysicalPositionStructure">
                         <xs:annotation>
                             <xs:documentation>Coordinates of a physical position determined by a GNSS
                             </xs:documentation>
@@ -197,7 +197,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="BeaconPointPhysicalPosition" type="tns:BeaconPointPhysicalPositionStructure"
+            <xs:element name="BeaconPointPhysicalPosition" type="broker:BeaconPointPhysicalPositionStructure"
                 minOccurs="1" maxOccurs="1" />
             <xs:element name="BeaconPointTimestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
@@ -209,10 +209,10 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
                     <xs:element name="BeaconPointPhysicalPosition"
-                        type="tns:BeaconPointPhysicalPositionStructure">
+                        type="broker:BeaconPointPhysicalPositionStructure">
                         <xs:annotation>
                             <xs:documentation>Versioned reference to the identifying beacon point
                             </xs:documentation>
@@ -238,9 +238,9 @@
             <xs:documentation>Logical Position of a vehicle on a vehicle journey</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="VehicleJourneyRef" type="tns:VehicleJourneyWithOperatingDayRefStructure"
+                    <xs:element name="VehicleJourneyRef" type="broker:VehicleJourneyWithOperatingDayRefStructure"
                         minOccurs="0">
                         <xs:annotation>
                             <xs:documentation>Reference to a Vehicle Journey with an attached Operating Day
@@ -277,7 +277,7 @@
                             </xs:documentation>
                         </xs:annotation>
                     </xs:element>
-                    <xs:element name="PhysicalPosition" type="tns:PhysicalPositionStructure" minOccurs="0">
+                    <xs:element name="PhysicalPosition" type="broker:PhysicalPositionStructure" minOccurs="0">
                         <xs:annotation>
                             <xs:documentation>Phyiscal position corresponding to this logical position
                             </xs:documentation>
@@ -295,7 +295,7 @@
     </xs:complexType>
 
     <!-- Elements -->
-    <xs:element name="LogicalPositionDataStructure" type="tns:LogicalPositionDataStructure">
+    <xs:element name="LogicalPositionDataStructure" type="broker:LogicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -304,7 +304,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="OdometerPhysicalPositionDataStructure" type="tns:OdometerPhysicalPositionDataStructure">
+    <xs:element name="OdometerPhysicalPositionDataStructure" type="broker:OdometerPhysicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -313,7 +313,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="GnssPhysicalPositionDataStructure" type="tns:GnssPhysicalPositionDataStructure">
+    <xs:element name="GnssPhysicalPositionDataStructure" type="broker:GnssPhysicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -322,7 +322,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="BeaconPointPhysicalPositionDataStructure" type="tns:BeaconPointPhysicalPositionDataStructure">
+    <xs:element name="BeaconPointPhysicalPositionDataStructure" type="broker:BeaconPointPhysicalPositionDataStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>
@@ -331,7 +331,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="PhysicalPositionDataStructure" type="tns:PhysicalPositionStructure">
+    <xs:element name="PhysicalPositionDataStructure" type="broker:PhysicalPositionStructure">
         <xs:annotation>
             <xs:appinfo>
                 <in:ValidTopics>

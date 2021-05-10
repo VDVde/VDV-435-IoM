@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:netex="http://www.netex.org.uk/netex"
-    xmlns="http://vdv.de/IoM" targetNamespace="http://vdv.de/IoM" elementFormDefault="qualified" version="2.0">
+    xmlns:base="http://vdv.de/IoM" targetNamespace="http://vdv.de/IoM" elementFormDefault="qualified" version="2.0">
 
     <!-- IMPORTANT: You need to download the files in https://github.com/nick-knowles/NeTEx-XML and extract them to directory 
         "NeTEx-XML" for this schema to successfully import/reference NeTEx schemas -->
@@ -37,9 +37,9 @@
             <xs:documentation>Abstract context for all messages sent in Request/Response</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="AbstractBasicStructure">
+            <xs:extension base="base:AbstractBasicStructure">
                 <xs:sequence>
-                    <xs:element name="MessageId" type="UUIDType">
+                    <xs:element name="MessageId" type="base:UUIDType">
                         <xs:annotation>
                             <xs:documentation>Unique message id, used to reference asynchronous messages and for
                                 logging. The
@@ -57,15 +57,15 @@
             <xs:documentation>Abstract context for all requests sent in Request/Response</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="AbstractMessageStructure" />
+            <xs:extension base="base:AbstractMessageStructure" />
         </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="AbstractRequestWithReferenceStructure" abstract="true">
         <xs:complexContent>
-            <xs:extension base="AbstractRequestStructure">
+            <xs:extension base="base:AbstractRequestStructure">
                 <xs:sequence>
-                    <xs:element name="MessageIdRef" type="UUIDType" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="MessageIdRef" type="base:UUIDType" minOccurs="1" maxOccurs="1" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -77,10 +77,10 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="AbstractMessageStructure">
+            <xs:extension base="base:AbstractMessageStructure">
                 <!-- Uses the same semantics and structure as in SIRI responses -->
                 <xs:sequence>
-                    <xs:element name="CommonResponseCode" type="CommonResponseCodeEnumeration">
+                    <xs:element name="CommonResponseCode" type="base:CommonResponseCodeEnumeration">
                         <xs:annotation>
                             <xs:documentation>Common response codes describing global conditions of the system,
                                 independent from the actual request
@@ -94,7 +94,7 @@
 
     <xs:complexType name="InvalidMessageResponseStructure">
         <xs:complexContent>
-            <xs:extension base="AbstractResponseStructure">
+            <xs:extension base="base:AbstractResponseStructure">
 
             </xs:extension>
         </xs:complexContent>
@@ -107,9 +107,9 @@
         </xs:annotation>
         <xs:complexContent>
             <!-- Should inherit from AbstractRequestStructure, because it is not a response directly related to a request -->
-            <xs:extension base="AbstractRequestStructure">
+            <xs:extension base="base:AbstractRequestStructure">
                 <xs:sequence>
-                    <xs:element name="MessageIdRef" type="UUIDType">
+                    <xs:element name="MessageIdRef" type="base:UUIDType">
                         <xs:annotation>
                             <xs:documentation>Message ID to which this asynchronous message refers to
                             </xs:documentation>
@@ -125,7 +125,7 @@
             <xs:element name="Timestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
             <xs:element name="Version" type="xs:normalizedString" minOccurs="1" maxOccurs="1" />
             <xs:element name="TimestampOfMeasurement" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
-            <xs:element name="PublisherId" type="IdType" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PublisherId" type="base:IdType" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
 

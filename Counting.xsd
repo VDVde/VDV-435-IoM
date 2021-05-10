@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
-    xmlns:in="http://vdv.de/IoM/internal" xmlns:broker="http://vdv.de/IoM" elementFormDefault="qualified"
-    attributeFormDefault="unqualified">
+    xmlns:broker="http://vdv.de/IoM" elementFormDefault="qualified" attributeFormDefault="unqualified">
     <!-- Imports -->
     <xs:include schemaLocation="broker_datatypes.xsd" />
     <xs:include schemaLocation="Positioning.xsd" />
@@ -107,10 +106,12 @@
         <xs:complexContent>
             <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded" type="broker:CountingStructure"/>
+                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded"
+                        type="broker:CountingStructure" />
                     <xs:element name="TimestampOfCountingReset" type="xs:dateTime" minOccurs="1"
                         maxOccurs="1" />
-                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0"
+                        maxOccurs="1" />
                     <xs:element name="DoorOpenDuration" type="xs:nonNegativeInteger" minOccurs="0"
                         maxOccurs="1" />
                     <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
@@ -126,8 +127,10 @@
         <xs:complexContent>
             <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded" type="broker:CountingStructure"/>
-                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded"
+                        type="broker:CountingStructure" />
+                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0"
+                        maxOccurs="1" />
                     <xs:element name="IsIntermediateCount" type="xs:boolean" minOccurs="1" maxOccurs="1" />
                     <xs:element name="DoorOpenDuration" type="xs:nonNegativeInteger" minOccurs="0"
                         maxOccurs="1" />
@@ -143,8 +146,8 @@
         <xs:complexContent>
             <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="SensorState" type="broker:SensorStateInformationStructure" minOccurs="1"
-                        maxOccurs="1" />
+                    <xs:element name="SensorState" type="broker:SensorStateInformationStructure"
+                        minOccurs="1" maxOccurs="1" />
                     <xs:element name="MeasurementData" type="broker:AdditionalSensorMeasurementInformation"
                         minOccurs="0" maxOccurs="1" />
                     <xs:element name="CountingQuality" type="xs:decimal" minOccurs="0" maxOccurs="1" />
@@ -180,8 +183,10 @@
         <xs:complexContent>
             <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="OccupancyStructure" type="broker:OccupancyStructure" minOccurs="1" maxOccurs="unbounded"/>
-                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="OccupancyStructure" type="broker:OccupancyStructure" minOccurs="1"
+                        maxOccurs="unbounded" />
+                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0"
+                        maxOccurs="1" />
                     <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
                 </xs:sequence>
             </xs:extension>
@@ -193,28 +198,12 @@
         <xs:annotation>
             <xs:documentation>The SingleEvent Count is used to transmit the count data triggered by a specific trigger.
             </xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/Counting/+/+/SingleEventCountingData" />
-                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/SingleEventCountingData" />
-                    <in:ValidTopic
-                        topic="/#/Counting/+/+/AreaCount/+/CountingDevice/+/SingleEventCountingData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
     <xs:element name="IncrementCountingDataStructure" type="broker:IncrementCountingDataStructure">
         <xs:annotation>
             <xs:documentation>The increment count is used to record entries/exits over a defined period of time.
             </xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/Counting/+/+/Increment.CountingData" />
-                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/Increment.CountingData" />
-                    <in:ValidTopic
-                        topic="/#/Counting/APC/+/AreaCount/+/CountingDevice/+/Increment.CountingData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
     <xs:element name="OccupancyDataStructure" type="broker:OccupancyDataStructure">
@@ -222,34 +211,16 @@
             <xs:documentation>The occupancy levels can be used to determine the current utilization of a space. This
                 value can be collected for the entire vehicle as well as for individual subareas.
             </xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/Occupancy/+/+/OccupancyData" />
-                    <in:ValidTopic topic="/#/Occupancy/+/+/AreaCount/+/OccupancyData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
     <xs:element name="SensorControlDataStructure" type="broker:SensorControlDataStructure">
         <xs:annotation>
             <xs:documentation>Status information that is used to transmit the current sensor status.</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/Counting/+/+/SensorControlData" />
-                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/SensorControlData" />
-                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/CountingDevice/+/SensorControlData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
     <xs:element name="SensorStateDataStructure" type="broker:SensorStateDataStructure">
         <xs:annotation>
             <xs:documentation>Used to transmit commands to the sensors.</xs:documentation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/Counting/+/+/AreaCount/+/CountingDevice/+/SensorStateData" />
-                </in:ValidTopics>
-            </xs:appinfo>
         </xs:annotation>
     </xs:element>
 </xs:schema>

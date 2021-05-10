@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
-    xmlns:in="http://vdv.de/IoM/internal" xmlns:netex="http://www.netex.org.uk/netex" xmlns:broker="http://vdv.de/IoM"
-    elementFormDefault="qualified">
+    xmlns:netex="http://www.netex.org.uk/netex" xmlns:broker="http://vdv.de/IoM" elementFormDefault="qualified">
     <xs:include schemaLocation="broker_datatypes.xsd" />
     <xs:import namespace="http://www.netex.org.uk/netex"
         schemaLocation="../NeTEx-master-f5a5ff0/xsd/NeTEx_publication.xsd" />
@@ -83,7 +82,8 @@
         <xs:complexContent>
             <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="OdometerPhysicalPosition" type="broker:OdometerPhysicalPositionStructure">
+                    <xs:element name="OdometerPhysicalPosition"
+                        type="broker:OdometerPhysicalPositionStructure">
                         <xs:annotation>
                             <xs:documentation>Physical position as determined by an odometer
                             </xs:documentation>
@@ -240,8 +240,8 @@
         <xs:complexContent>
             <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="VehicleJourneyRef" type="broker:VehicleJourneyWithOperatingDayRefStructure"
-                        minOccurs="0">
+                    <xs:element name="VehicleJourneyRef"
+                        type="broker:VehicleJourneyWithOperatingDayRefStructure" minOccurs="0">
                         <xs:annotation>
                             <xs:documentation>Reference to a Vehicle Journey with an attached Operating Day
                             </xs:documentation>
@@ -297,47 +297,30 @@
     <!-- Elements -->
     <xs:element name="LogicalPositionDataStructure" type="broker:LogicalPositionDataStructure">
         <xs:annotation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/LogicalPositionData" />
-                </in:ValidTopics>
-            </xs:appinfo>
+            <xs:documentation>Logical Position of a Vehicle on a VehicleJourney</xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:element name="OdometerPhysicalPositionDataStructure" type="broker:OdometerPhysicalPositionDataStructure">
+    <xs:element name="OdometerPhysicalPositionDataStructure"
+        type="broker:OdometerPhysicalPositionDataStructure">
         <xs:annotation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/PhysicalPosition/OdometerPhysicalPositionData" />
-                </in:ValidTopics>
-            </xs:appinfo>
+            <xs:documentation>Structure for the physical position as determined by an odometer.</xs:documentation>
         </xs:annotation>
     </xs:element>
     <xs:element name="GnssPhysicalPositionDataStructure" type="broker:GnssPhysicalPositionDataStructure">
         <xs:annotation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/PhysicalPosition/GnssPhysicalPositionData" />
-                </in:ValidTopics>
-            </xs:appinfo>
+            <xs:documentation>Structure for the physical position as determined by a GNSS, e.g. GPS.</xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:element name="BeaconPointPhysicalPositionDataStructure" type="broker:BeaconPointPhysicalPositionDataStructure">
+    <xs:element name="BeaconPointPhysicalPositionDataStructure"
+        type="broker:BeaconPointPhysicalPositionDataStructure">
         <xs:annotation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/PhysicalPosition/BeaconPointPhysicalPositionData" />
-                </in:ValidTopics>
-            </xs:appinfo>
+            <xs:documentation>Structure for the physical position as determined by a external beacon point.
+            </xs:documentation>
         </xs:annotation>
     </xs:element>
     <xs:element name="PhysicalPositionDataStructure" type="broker:PhysicalPositionStructure">
         <xs:annotation>
-            <xs:appinfo>
-                <in:ValidTopics>
-                    <in:ValidTopic topic="/#/PhysicalPosition" />
-                </in:ValidTopics>
-            </xs:appinfo>
+            <xs:documentation>Common context for physical positions from various sensors</xs:documentation>
         </xs:annotation>
     </xs:element>
 

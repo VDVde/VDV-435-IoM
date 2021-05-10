@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
-    xmlns:in="http://vdv.de/IoM/internal" xmlns:tns="http://vdv.de/IoM" elementFormDefault="qualified"
+    xmlns:in="http://vdv.de/IoM/internal" xmlns:broker="http://vdv.de/IoM" elementFormDefault="qualified"
     attributeFormDefault="unqualified">
     <!-- Imports -->
     <xs:include schemaLocation="broker_datatypes.xsd" />
@@ -62,8 +62,8 @@
             <xs:documentation>Structure to transmit additional sensor status information</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="State" type="tns:State" minOccurs="1" maxOccurs="1" />
-            <xs:element name="FailureType" type="tns:FailureType" minOccurs="0" maxOccurs="1" />
+            <xs:element name="State" type="broker:State" minOccurs="1" maxOccurs="1" />
+            <xs:element name="FailureType" type="broker:FailureType" minOccurs="0" maxOccurs="1" />
             <xs:element name="debugEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
@@ -72,8 +72,8 @@
             <xs:documentation>Type for choice of logical and position structure.</xs:documentation>
         </xs:annotation>
         <xs:choice>
-            <xs:element name="LogicalPosition" type="tns:LogicalPositionDataStructure" />
-            <xs:element name="PhysicalPosition" type="tns:PhysicalPositionStructure" />
+            <xs:element name="LogicalPosition" type="broker:LogicalPositionDataStructure" />
+            <xs:element name="PhysicalPosition" type="broker:PhysicalPositionStructure" />
         </xs:choice>
     </xs:complexType>
     <xs:complexType name="CountingStructure">
@@ -83,7 +83,7 @@
         <xs:sequence>
             <xs:element name="In" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
             <xs:element name="Out" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
-            <xs:element name="ObjectType" type="tns:objectType" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ObjectType" type="broker:objectType" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="OccupancyStructure">
@@ -93,7 +93,7 @@
         <xs:sequence>
             <xs:element name="Occupancy" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
             <xs:element name="SiteCapacity" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1" />
-            <xs:element name="ObjectType" type="tns:objectType" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ObjectType" type="broker:objectType" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
 
@@ -105,12 +105,12 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded" type="tns:CountingStructure"/>
+                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded" type="broker:CountingStructure"/>
                     <xs:element name="TimestampOfCountingReset" type="xs:dateTime" minOccurs="1"
                         maxOccurs="1" />
-                    <xs:element name="CountingPosition" type="tns:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0" maxOccurs="1" />
                     <xs:element name="DoorOpenDuration" type="xs:nonNegativeInteger" minOccurs="0"
                         maxOccurs="1" />
                     <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
@@ -124,10 +124,10 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded" type="tns:CountingStructure"/>
-                    <xs:element name="CountingPosition" type="tns:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="Counting" minOccurs="1" maxOccurs="unbounded" type="broker:CountingStructure"/>
+                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0" maxOccurs="1" />
                     <xs:element name="IsIntermediateCount" type="xs:boolean" minOccurs="1" maxOccurs="1" />
                     <xs:element name="DoorOpenDuration" type="xs:nonNegativeInteger" minOccurs="0"
                         maxOccurs="1" />
@@ -141,11 +141,11 @@
             <xs:documentation>Structure for transmitting current sensor state information.</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="SensorState" type="tns:SensorStateInformationStructure" minOccurs="1"
+                    <xs:element name="SensorState" type="broker:SensorStateInformationStructure" minOccurs="1"
                         maxOccurs="1" />
-                    <xs:element name="MeasurementData" type="tns:AdditionalSensorMeasurementInformation"
+                    <xs:element name="MeasurementData" type="broker:AdditionalSensorMeasurementInformation"
                         minOccurs="0" maxOccurs="1" />
                     <xs:element name="CountingQuality" type="xs:decimal" minOccurs="0" maxOccurs="1" />
                     <xs:element name="TimestampOfLastCountEvent" type="xs:dateTime" minOccurs="0"
@@ -161,7 +161,7 @@
             <xs:documentation>Structure for transmitting sensor control instructions.</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
                     <xs:element name="SensorReset" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                     <xs:element name="SensorCounterReset" type="xs:boolean" minOccurs="0" maxOccurs="1" />
@@ -178,10 +178,10 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="tns:AbstractDataPublicationStructure">
+            <xs:extension base="broker:AbstractDataPublicationStructure">
                 <xs:sequence>
-                    <xs:element name="OccupancyStructure" type="tns:OccupancyStructure" minOccurs="1" maxOccurs="unbounded"/>
-                    <xs:element name="CountingPosition" type="tns:PositionType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="OccupancyStructure" type="broker:OccupancyStructure" minOccurs="1" maxOccurs="unbounded"/>
+                    <xs:element name="CountingPosition" type="broker:PositionType" minOccurs="0" maxOccurs="1" />
                     <xs:element name="Extensions" minOccurs="0" maxOccurs="1" />
                 </xs:sequence>
             </xs:extension>
@@ -189,7 +189,7 @@
     </xs:complexType>
 
     <!-- Root elements -->
-    <xs:element name="SingleEventCountingDataStructure" type="tns:SingleEventCountingDataStructure">
+    <xs:element name="SingleEventCountingDataStructure" type="broker:SingleEventCountingDataStructure">
         <xs:annotation>
             <xs:documentation>The SingleEvent Count is used to transmit the count data triggered by a specific trigger.
             </xs:documentation>
@@ -203,7 +203,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="IncrementCountingDataStructure" type="tns:IncrementCountingDataStructure">
+    <xs:element name="IncrementCountingDataStructure" type="broker:IncrementCountingDataStructure">
         <xs:annotation>
             <xs:documentation>The increment count is used to record entries/exits over a defined period of time.
             </xs:documentation>
@@ -217,7 +217,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="OccupancyDataStructure" type="tns:OccupancyDataStructure">
+    <xs:element name="OccupancyDataStructure" type="broker:OccupancyDataStructure">
         <xs:annotation>
             <xs:documentation>The occupancy levels can be used to determine the current utilization of a space. This
                 value can be collected for the entire vehicle as well as for individual subareas.
@@ -230,7 +230,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="SensorControlDataStructure" type="tns:SensorControlDataStructure">
+    <xs:element name="SensorControlDataStructure" type="broker:SensorControlDataStructure">
         <xs:annotation>
             <xs:documentation>Status information that is used to transmit the current sensor status.</xs:documentation>
             <xs:appinfo>
@@ -242,7 +242,7 @@
             </xs:appinfo>
         </xs:annotation>
     </xs:element>
-    <xs:element name="SensorStateDataStructure" type="tns:SensorStateDataStructure">
+    <xs:element name="SensorStateDataStructure" type="broker:SensorStateDataStructure">
         <xs:annotation>
             <xs:documentation>Used to transmit commands to the sensors.</xs:documentation>
             <xs:appinfo>

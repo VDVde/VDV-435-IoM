@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vdv.de/IoM"
-    xmlns:netex="http://www.netex.org.uk/netex" xmlns:broker="http://vdv.de/IoM" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="https://knowhow.vdv.de/topics/internet-of-mobility/" xmlns:netex="http://www.netex.org.uk/netex"
+    xmlns:broker="https://knowhow.vdv.de/topics/internet-of-mobility/" elementFormDefault="qualified">
     <xs:include schemaLocation="broker_datatypes.xsd" />
     <xs:import namespace="http://www.netex.org.uk/netex"
         schemaLocation="../NeTEx-master-f5a5ff0/xsd/NeTEx_publication.xsd" />

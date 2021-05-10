@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:netex="http://www.netex.org.uk/netex"
-    xmlns:base="http://vdv.de/IoM" xmlns:int="http://vdv.de/IoM" targetNamespace="http://vdv.de/IoM"
-    elementFormDefault="qualified">
+    xmlns:base="https://knowhow.vdv.de/topics/internet-of-mobility/"
+    xmlns:int="https://knowhow.vdv.de/topics/internet-of-mobility/"
+    targetNamespace="https://knowhow.vdv.de/topics/internet-of-mobility/" elementFormDefault="qualified">
 
     <xs:include schemaLocation="broker_datatypes.xsd" />
 
@@ -577,7 +578,8 @@
                 <xs:sequence>
                     <xs:choice minOccurs="1" maxOccurs="1">
                         <!-- At least one of these choices must be chosen -->
-                        <xs:element name="DatedJourneyRef" type="base:VehicleJourneyWithOperatingDayRefStructure">
+                        <xs:element name="DatedJourneyRef"
+                            type="base:VehicleJourneyWithOperatingDayRefStructure">
                             <xs:annotation>
                                 <xs:documentation>Versioned reference to a dated vehicle journey
                                 </xs:documentation>

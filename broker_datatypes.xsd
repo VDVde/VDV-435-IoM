@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:netex="http://www.netex.org.uk/netex"
-    xmlns:base="http://vdv.de/IoM" targetNamespace="http://vdv.de/IoM" elementFormDefault="qualified" version="2.0">
+    xmlns:base="https://knowhow.vdv.de/topics/internet-of-mobility/"
+    targetNamespace="https://knowhow.vdv.de/topics/internet-of-mobility/" elementFormDefault="qualified" version="2.0">
 
     <!-- IMPORTANT: You need to download the files in https://github.com/nick-knowles/NeTEx-XML and extract them to directory 
         "NeTEx-XML" for this schema to successfully import/reference NeTEx schemas -->
@@ -189,7 +190,8 @@
             <xs:enumeration value="messageUnderstood">
                 <xs:annotation>
                     <xs:documentation>Request has been understood, but has been declined to due business logic. Refer to
-                        specialized ResponseCode for more information.</xs:documentation>
+                        specialized ResponseCode for more information.
+                    </xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="unkownExtensions">

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:base="https://knowhow.vdv.de/topics/internet-of-mobility/"
+    xmlns:int="https://knowhow.vdv.de/topics/internet-of-mobility/"
+    targetNamespace="https://knowhow.vdv.de/topics/internet-of-mobility/" elementFormDefault="qualified">
+    <xs:include schemaLocation="broker_datatypes.xsd" />
+
+    <xs:simpleType name="VersionedObjectTypeEnumeration">
+        <xs:annotation>
+            <xs:documentation>The VersionedObjectTypeEnumeration shows the different types of components that are
+                versioned.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:normalizedString">
+            <xs:enumeration value="timetableData" />
+            <xs:enumeration value="siteData" />
+            <xs:enumeration value="serviceData" />
+            <xs:enumeration value="vehicleScheduleData" />
+            <xs:enumeration value="driverScheduleData" />
+            <xs:enumeration value="serviceCalendarData" />
+            <xs:enumeration value="infrastructureData" />
+            <xs:enumeration value="resourceData" />
+            <xs:enumeration value="operatingSystem" />
+            <xs:enumeration value="applicationSoftware" />
+            <xs:enumeration value="frontend" />
+            <xs:enumeration value="configuration" />
+            <xs:enumeration value="firmware" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="VersionStatusEnumeration">
+        <xs:annotation>
+            <xs:documentation>Different Statuses of a version.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:normalizedString">
+            <xs:enumeration value="downloaded" />
+            <xs:enumeration value="activated" />
+            <xs:enumeration value="other" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="VersioningStructure">
+        <xs:annotation>
+            <xs:documentation>Structure for combining a VersionedObject with its Version.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="VersionedObject" type="int:VersionedObjectTypeEnumeration" minOccurs="1"
+                maxOccurs="1" />
+            <xs:element name="Version" type="xs:normalizedString" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ActualVersioningStructure">
+        <xs:annotation>
+            <xs:documentation>The ActualVersioningStructure is used to indicate the version of a component.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="int:VersioningStructure">
+                <xs:sequence>
+                    <xs:element name="VersionStatus" type="int:VersionStatusEnumeration" minOccurs="1"
+                        maxOccurs="1" />
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="VersionStatusDataStructure">
+        <xs:annotation>
+            <xs:documentation>The VersionStatusDataStructure is sent from a component to report the actual version
+                status.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="base:AbstractDataPublicationStructure">
+                <xs:sequence>
+                    <xs:element name="ActualVersion" type="int:ActualVersioningStructure" minOccurs="1"
+                        maxOccurs="unbounded" />
+                    <xs:element name="Extensions" type="xs:anyType" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="VersionStatusDataStructure" type="int:VersionStatusDataStructure" />
+</xs:schema>
